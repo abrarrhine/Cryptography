@@ -1,30 +1,37 @@
-'''
-@Caesar's Cipher@
-Comments:
-Author: Abrar Rhine
-Date: 01/12/2023
-'''
+import random
 
-# Alphabet
-A = ['A','B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'k', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+def sc_encryption(st, shift):
+    res = ""
+    space_substitute = ["@", "#", "$", ".", ";", "&", "*", "?", "~", ","]
+    for i in st:
+        if i == " ":
+            res = res + space_substitute[random.randint(0, 9)]
+        elif 48 <= ord(i) <= 57:
+            res = res + chr((ord(i) + shift - 48) % 10 + 48)
+        elif i.isupper():
+            res = res + chr((ord(i) + shift - 65) % 26 + 65)
+        else:
+            res = res + chr((ord(i) + shift - 97) % 26 + 97)
+    return res
 
-# Input values
-text = input('\nInput text: ').upper()
-key = int(input('\nInput key: '))
+def sc_decryption(st, shift):
+    res = ""
+    space_substitute = ["@", "#", "$", ".", ";", "&", "*", "?", "~", ","]
+    for i in st:
+        if i in space_substitute:
+            res = res + " "
+        elif 48 <= ord(i) <= 57:
+            res = res + chr((ord(i) - shift - 48) % 10 + 48)
+        elif i.isupper():
+            res = res + chr((ord(i) - shift - 65) % 26 + 65)
+        else:
+            res = res + chr((ord(i) - shift - 97) % 26 + 97)
+    return res
 
-
-# Encryption proccess
-result = ''
-for t in text:
-    if A.count(t) != 0:
-        pos = A.index(t)
-        pos = pos + key  
-        if pos >= len(A):
-            pos -= len(A)
-        result += A[pos]
-    else:
-        result += t
-
-
-# Output values
-print('\nEncrypted text:', result)
+string = input("Enter String: ")
+move = int(input("Enter Shift Key: "))
+encrypted = sc_encryption(string, move)
+decrypted = sc_decryption(encrypted, move)
+print("Original text: " + string)
+print("Encrypted text: " + encrypted)
+print("Decrypted text: " + decrypted)
